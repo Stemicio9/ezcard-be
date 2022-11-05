@@ -23,4 +23,20 @@ public class JwtUserDetailsService implements UserDetailsService {
         return user;
     }
 
+
+    //insert user
+    public User insertUser(User user) {
+        return userRepository.save(user);
+    }
+
+    //list users
+    public ArrayList<User> listUsers() {
+        return (ArrayList<User>) userRepository.findAll();
+    }
+
+    //delete user
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+    }
+
 }

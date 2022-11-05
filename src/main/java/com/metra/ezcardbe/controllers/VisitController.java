@@ -17,8 +17,8 @@ public class VisitController {
 
     //receive id from request
     @GetMapping("/get")
-    public ResponseEntity getProfile(@RequestParam("id") String id) {
-        return ResponseEntity.ok(profileService.getProfileFromDB(id));
+    public ResponseEntity getProfile(@RequestParam("username") String username) {
+        return ResponseEntity.ok(profileService.findByUsername(username));
     }
 
 }

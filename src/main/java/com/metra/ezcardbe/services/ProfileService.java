@@ -21,8 +21,8 @@ public class ProfileService {
         return profile;
     }
 
-    public Profile getProfileFromDB(String id) {
-        return profileRepository.findById(id).get();
+    public Profile findByUsername(String username) {
+        return profileRepository.findByUsername(username);
     }
 
     // Update profile
