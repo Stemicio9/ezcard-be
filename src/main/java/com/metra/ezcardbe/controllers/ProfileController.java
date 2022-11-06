@@ -1,12 +1,12 @@
 package com.metra.ezcardbe.controllers;
 
 import com.metra.ezcardbe.entities.Profile;
+import com.metra.ezcardbe.entities.UserEz;
 import com.metra.ezcardbe.security.JwtRequest;
 import com.metra.ezcardbe.security.services.JwtUserDetailsService;
 import com.metra.ezcardbe.services.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
@@ -24,7 +24,7 @@ public class ProfileController {
 
 
     //Update profile
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity updateProfile(@RequestBody Profile profile) {
         return ResponseEntity.ok(profileService.updateProfile(profile));
     }
@@ -35,6 +35,12 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.insertProfile(profile));
     }
 
+    //Get User by username
+    @GetMapping("/get/{username}")
+    public ResponseEntity getUserByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(jwtUserDetailsService.loadUserByUsername(username));
+    }
+
 
     //Create user
     @PostMapping("/create")
@@ -42,7 +48,7 @@ public class ProfileController {
         Profile profile = new Profile();
         profile.setUsername(request.getUsername());
         insertProfile(profile);
-        User user = new User(request.getUsername(), request.getPassword(), null);
+        UserEz user = new UserEz(request.getUsername(), request.getPassword());
         return ResponseEntity.ok(jwtUserDetailsService.insertUser(user));
     }
 

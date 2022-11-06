@@ -18,6 +18,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
 
+        if(request.getRequestURI().contains("authenticate") || request.getRequestURI().contains("visit") || request.getRequestURI().contains("profile/create")) {
+            return;
+        }
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
     }
 }
