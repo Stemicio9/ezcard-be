@@ -9,9 +9,7 @@ import java.util.Optional;
 @Repository
 public interface ProfileRepository extends MongoRepository<Profile, String> {
 
-    Profile findByEmail(String email);
-
-    Profile findByUsername(String username);
+    Optional<Profile> findByUsername(String username);
     Optional<Profile> findById(String id);
 
 

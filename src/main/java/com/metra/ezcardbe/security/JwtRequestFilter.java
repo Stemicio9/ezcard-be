@@ -4,7 +4,6 @@ package com.metra.ezcardbe.security;
 import com.metra.ezcardbe.security.services.JwtUserDetailsService;
 import com.metra.ezcardbe.security.utils.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,24 +20,37 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUserDetailsService jwtUserDetailsService;
+    private final JwtUserDetailsService jwtUserDetailsService;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    public JwtRequestFilter(JwtUserDetailsService jwtUserDetailsService, JwtTokenUtil jwtTokenUtil) {
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
-        System.out.println("JwtRequestFilter.doFilterInternal 1111");
+
+
+
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, aaa");
+
+
+        System.out.println("JwtRequestFilter.doFilterInternal");
         System.out.println(request.getRequestURI());
         if(request.getRequestURI().contains("authenticate")) {
             chain.doFilter(request, response);
             return;
         }
         System.out.println("JwtRequestFilter.doFilterInternal");
-        final String requestTokenHeader = request.getHeader("Authorization");
+
+        final String requestTokenHeader = request.getHeader("aaa");
 
         String username = null;
         String jwtToken = null;

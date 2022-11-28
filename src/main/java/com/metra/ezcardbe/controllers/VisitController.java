@@ -1,7 +1,6 @@
 package com.metra.ezcardbe.controllers;
 
 import com.metra.ezcardbe.services.ProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/visit")
 public class VisitController {
 
-    @Autowired
-    private ProfileService profileService;
+    private final ProfileService profileService;
+
+    public VisitController(ProfileService profileService) {
+        this.profileService = profileService;
+    }
 
     //receive id from request
     @GetMapping("/get")
