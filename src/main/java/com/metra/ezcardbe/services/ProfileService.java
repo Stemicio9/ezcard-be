@@ -84,7 +84,7 @@ public class ProfileService {
         Profile profile = profileRepository.findByUsername(name).orElse(null);
         if (profile == null) {
             log.error("Profile for user {} does not exist", name);
-            return null;
+            return new ProfileContainer();
         } else {
             log.info("Profile for user {} retrieved", name);
             return profile.getProfile();

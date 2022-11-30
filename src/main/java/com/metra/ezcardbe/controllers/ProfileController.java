@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin()
 @RequestMapping ("/profile")
 public class ProfileController {
 
@@ -73,7 +73,11 @@ public class ProfileController {
 
     @PostMapping("/get/profile")
     public ResponseEntity getProfile(Authentication authentication) {
-        return ResponseEntity.ok(profileService.getProfile(authentication.getName()));
+        String username = authentication.getName();
+        System.out.println("username: " + username);
+        ProfileContainer profile = profileService.getProfile(username);
+        System.out.println("PROFILO TROVATO = " + profile.getFirstName());
+        return ResponseEntity.ok().body(profile);
     }
 
     @PostMapping("/get/social")

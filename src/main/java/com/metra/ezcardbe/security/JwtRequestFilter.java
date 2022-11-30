@@ -33,32 +33,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
 
-
-
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me, aaa");
-
-
-        System.out.println("JwtRequestFilter.doFilterInternal");
-        System.out.println(request.getRequestURI());
         if(request.getRequestURI().contains("authenticate")) {
             chain.doFilter(request, response);
             return;
         }
-        System.out.println("JwtRequestFilter.doFilterInternal");
 
-        final String requestTokenHeader = request.getHeader("aaa");
+        final String requestTokenHeader = request.getHeader("Authentication");
 
         String username = null;
         String jwtToken = null;
         // JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
+            System.out.println("TOKEN DELLA RICHIESTA: " + jwtToken);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                System.out.println("USERNAME DELLA RICHIESTA: " + username);
             } catch (IllegalArgumentException e) {
                 System.out.println("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {

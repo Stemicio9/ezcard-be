@@ -17,10 +17,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-
         if(request.getRequestURI().contains("authenticate") || request.getRequestURI().contains("visit") || request.getRequestURI().contains("profile/create")) {
             return;
         }
+        authException.printStackTrace();
+        System.out.println("JwtAuthenticationEntryPoint.commence       sto per dire che l'utente non è autorizzato");
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
     }
 }
